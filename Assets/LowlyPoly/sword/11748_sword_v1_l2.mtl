@@ -1,0 +1,81 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 22.11.2011 12:45:28
+
+newmtl Sword_handle
+	Ns 44.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.5400 0.5400 0.5400
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Sword_handle_diffuse.jpg
+	map_Kd Sword_handle_diffuse.jpg
+	map_bump Sword_handle_diffuse.jpg
+	bump Sword_handle_diffuse.jpg
+	map_refl Map__4_Raytrace.jpg
+
+newmtl Sword_tip
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.2510 0.2118 0.1529
+	Kd 0.2510 0.2118 0.1529
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Sword_tip_diffuse.jpg
+	map_Kd Sword_tip_diffuse.jpg
+	map_bump Sword_tip_diffuse.jpg
+	bump Sword_tip_diffuse.jpg
+	map_refl Map__21_Raytrace.jpg
+
+newmtl Sword_straight_handle
+	Ns 16.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.3333 0.2157 0.0510
+	Kd 0.3333 0.2157 0.0510
+	Ks 0.2610 0.2610 0.2610
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Sword_straight_handle_diffuse.jpg
+	map_Kd Sword_straight_handle_diffuse.jpg
+	map_bump Sword_straight_handle_bump.jpg
+
+newmtl Sword_blade
+	Ns 37.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0902 0.0784 0.0471
+	Kd 0.0902 0.0784 0.0471
+	Ks 0.4410 0.4410 0.4410
+	Ke 0.0000 0.0000 0.0000
+	map_refl Map__10_Falloff.jpg
+
+newmtl Sword_guard
+	Ns 11.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 1.0000 1.0000
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.5400 0.5400 0.5400
+	Ke 0.0000 0.0000 0.0000
+	map_Ka Sword_guard_diffuse.jpg
+	map_Kd Sword_guard_diffuse.jpg
+	map_bump Sword_guard_bump.jpg
+	bump Sword_guard_bump.jpg
+	map_refl Map__1_Raytrace.jpg
