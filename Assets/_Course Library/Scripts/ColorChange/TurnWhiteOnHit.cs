@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class TurnWhiteOnHit : MonoBehaviour
 {
+    private bool hasBeenHit = false; // Track if the object has already been hit
+
     private void OnTriggerEnter(Collider other)
     {
-        // Check if the triggering object has the tag "Fencing Foil Sword"
-        if (other.CompareTag("Fencing Foil Sword"))
+        if (other.CompareTag("Fencing Foil Sword") && !hasBeenHit)
         {
-            // Change the color to white
             GetComponent<MeshRenderer>().material.color = Color.white;
-
-            // Increment the color change counter in the ScoreManager
             ScoreManager.instance.IncrementScore();
+            hasBeenHit = true; // Mark this object as having been hit
         }
     }
 }
