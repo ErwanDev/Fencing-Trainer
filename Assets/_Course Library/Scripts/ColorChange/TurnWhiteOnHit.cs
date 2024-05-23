@@ -11,6 +11,9 @@ public class TurnWhiteOnHit : MonoBehaviour
         {
             // Change the color to white
             GetComponent<MeshRenderer>().material.color = Color.white;
+
+            // Increment the color change counter in the ScoreManager
+            ScoreManager.instance.IncrementScore();
         }
     }
 }
