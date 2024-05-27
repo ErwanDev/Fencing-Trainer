@@ -13,6 +13,16 @@ public class TurnWhiteOnHit : MonoBehaviour
             GetComponent<MeshRenderer>().material.color = Color.white;
             ScoreManager.instance.IncrementScore();
             hasBeenHit = true; // Mark this object as having been hit
+
+            StartCoroutine(ResetColorAndHitStatus());
+
         }
+    }
+
+    IEnumerator ResetColorAndHitStatus()
+    {
+        yield return new WaitForSeconds(2f);
+        GetComponent<MeshRenderer>().material.color = Color.red;
+        hasBeenHit = false; 
     }
 }
