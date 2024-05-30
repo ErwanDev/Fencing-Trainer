@@ -13,6 +13,14 @@ public class AudioManager : MonoBehaviour
     public RectTransform leftFootL; // Left foot (L) to show with audio clip 5
     public RectTransform rightFootL; // Right foot (L) to show with audio clip 5
 
+    public Transform dummy;
+
+    public Transform target;
+
+    public Vector3 dummyPosition1 = new Vector3(-10.6334105f,2.00732088f,2.13599992f);
+    public Vector3 dummyPosition2 = new Vector3(-10.6334105f,2.00732088f,1.38100004f);
+    public Vector3 dummyPosition3 = new Vector3(-10.6334105f,2.00732088f,0.866999984f);
+
     private void Start()
     {
         // Ensure the arrow image and foot UI elements are initially inactive
@@ -46,8 +54,20 @@ public class AudioManager : MonoBehaviour
     {
         for (int i = 0; i < audioClips.Length; i++)
         {
+
             if (audioClips[i] != null)
             {
+
+                float waitTime = audioClips[i].length;
+                float secondDelay = 3f;
+
+                if (i == 4 || i == 7) {
+                    secondDelay = 5f;
+                }
+
+                if (i == 5 || i == 8 || i == 9) {
+                    secondDelay = 7f;
+                }
 
                 Debug.Log("Playing audio clip: " + audioClips[i].name);
 
@@ -65,43 +85,69 @@ public class AudioManager : MonoBehaviour
 
                     if (rightFootE != null)
                         rightFootE.gameObject.SetActive(true);
+
+
+                    if (dummy != null) {
+                        dummy.position = dummyPosition1;
+                    }
+
                 }
-                else if (i == 6)
+                else if (i == 5)
                 {
-                    Debug.Log("Showing extension UI elements");
+                    Debug.Log("Showing advance UI elements");
                     if (leftFootA != null)
                         leftFootA.gameObject.SetActive(true);
 
                     if (rightFootA != null)
                         rightFootA.gameObject.SetActive(true);
-                }
-                else if (i == 8) 
-                {
-                    Debug.Log("Showing extension UI elements");
-                    if (leftFootL != null)
-                        leftFootL.gameObject.SetActive(true);
 
-                    if (rightFootL != null)
-                        rightFootL.gameObject.SetActive(true);
+                    if (dummy != null) {
+                        dummy.position = dummyPosition2;
+                    }
+                } else if (i == 7) {
+                    if (dummy != null) {
+                        dummy.position = dummyPosition3;
+                    }
                 }
-                else if (i == 10)
+                else if (i == 9)
                 {
-                    Debug.Log("Showing extension UI elements");
+                    Debug.Log("Showing flick UI elements");
                     if (leftFootE != null)
                         leftFootE.gameObject.SetActive(true);
 
                     if (rightFootE != null)
                         rightFootE.gameObject.SetActive(true);
+
+                    if (dummy != null) {
+                        dummy.position = dummyPosition1;
+                    }
+
                 }
 
                 // Play the current audio clip
                 audioSource.clip = audioClips[i];
                 audioSource.Play();
 
-                yield return new WaitForSeconds(audioClips[i].length);
+                yield return new WaitForSeconds(waitTime);
 
-                // Wait an additional 3 seconds
-                yield return new WaitForSeconds(3f);
+                // Wait an additional second Delay
+                yield return new WaitForSeconds(secondDelay);
+
+                if (i == 4) {
+                    target.localScale = new Vector3(0.0500000007f,0.0500000007f,0.0500000007f);
+                    yield return new WaitForSeconds(3f);
+                } else if (i == 8) 
+                {
+                    Debug.Log("Showing lunge UI elements");
+                    if (leftFootL != null)
+                        leftFootL.gameObject.SetActive(true);
+
+                    if (rightFootL != null)
+                        rightFootL.gameObject.SetActive(true);
+
+                    yield return new WaitForSeconds(7f);
+
+                }
 
                 // Hide the current UI elements after they are shown
                 if (i == 1 && arrowImage != null) // Hide arrow image
@@ -120,7 +166,7 @@ public class AudioManager : MonoBehaviour
                 }
                 else if (i == 6) 
                 {
-                    Debug.Log("Hiding extension UI elements");
+                    Debug.Log("Hiding advance UI elements");
                     if (leftFootA != null)
                         leftFootA.gameObject.SetActive(false);
 
@@ -129,16 +175,16 @@ public class AudioManager : MonoBehaviour
                 }
                 else if (i == 8) 
                 {
-                    Debug.Log("Hiding extension UI elements");
+                    Debug.Log("Hiding lunge UI elements");
                     if (leftFootL != null)
                         leftFootL.gameObject.SetActive(false);
 
                     if (rightFootL != null)
                         rightFootL.gameObject.SetActive(false);
                 }
-                else if (i == 10)
+                else if (i == 9)
                 {
-                    Debug.Log("Hiding extension UI elements");
+                    Debug.Log("Hiding flick UI elements");
                     if (leftFootE != null)
                         leftFootE.gameObject.SetActive(false);
 
