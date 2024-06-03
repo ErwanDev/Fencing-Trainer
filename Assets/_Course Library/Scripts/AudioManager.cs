@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class AudioManager : MonoBehaviour
 {
@@ -20,6 +21,13 @@ public class AudioManager : MonoBehaviour
     public Vector3 dummyPosition1 = new Vector3(-10.6334105f,2.00732088f,2.13599992f);
     public Vector3 dummyPosition2 = new Vector3(-10.6334105f,2.00732088f,1.38100004f);
     public Vector3 dummyPosition3 = new Vector3(-10.6334105f,2.00732088f,0.866999984f);
+
+    private GameObject player;
+    private GameObject carp;
+    private GameObject sword;
+    private XRGrabInteractable grabInteractable;
+    private float distance;
+    private bool triggered;
 
     private void Start()
     {
@@ -45,9 +53,19 @@ public class AudioManager : MonoBehaviour
         if (rightFootL != null)
             rightFootL.gameObject.SetActive(false);
 
+        player = GameObject.Find("Main Camera");
+        carp = GameObject.Find("Carpet (3)");
+        sword = GameObject.Find("Fencing Foil Sword");
+        grabInteractable = sword.GetComponent<XRGrabInteractable>();
+        triggered = false;
+    }
 
-        // Start the coroutine to play audio and show UI elements
-        StartCoroutine(PlayAudioAndShowUI());
+    private void Update() {
+        distance = (player.transform.position-carp.transform.position).sqrMagnitude;
+        if (distance<3*3 && !triggered && grabInteractable.isSelected) {
+            StartCoroutine(PlayAudioAndShowUI());
+            triggered = true;
+        }
     }
 
     IEnumerator PlayAudioAndShowUI()
