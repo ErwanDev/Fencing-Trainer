@@ -7,6 +7,10 @@ OpenAR VR Fencing Trainer
 
 Grab with either the left or right controller to teleport to the location of your reticle for long distances and walk for short distances.
 
+**Other Controls**
+
+Grab and hold with either the left or right controller while aiming at the sword to pick it up. To release the sword, release the grab button.
+
 
 
 
