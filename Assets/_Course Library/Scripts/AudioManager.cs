@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
 
     public Transform dummy;
 
+    public GameObject confusedButton;
+
     public Transform target;
 
     public Vector3 dummyPosition1 = new Vector3(-10.6334105f,2.00732088f,2.13599992f);
@@ -33,10 +35,64 @@ public class AudioManager : MonoBehaviour
     private bool readyForAdvanceHit = false;
     private bool readyForLungeHit = false;
     private bool readyForFlickHit = false;
+    private bool readyForConfusion1 = false;
+    private bool readyForConfusion2 = false;
+
+
+    void OnEnable() {
+        Debug.Log("Registering the process Collision handler");
+        CollisionDetection.OnCollided += processCollisionDetection;
+    }
+
+    void OnDisable() {
+        CollisionDetection.OnCollided -= processCollisionDetection;
+    }
+
+    void processCollisionDetection() {
+
+        Debug.Log("Collision Proccess Called");
+
+        if (readyForExtensionHit) {
+            Debug.Log("Extension Hit Ready So Call Next Routine");
+            readyForExtensionHit = false;
+            StartCoroutine(extensionAttackFinishedRoutine());
+        }
+
+        if (readyForAdvanceHit) {
+            readyForAdvanceHit = false;
+            StartCoroutine(advanceAttackFinishedRoutine());
+        }
+    
+        if (readyForLungeHit) {
+            readyForLungeHit = false;
+            StartCoroutine(lungeAttackFinishedRoutine());
+        }
+
+        if (readyForFlickHit) {
+            readyForFlickHit = false;
+            StartCoroutine(flickAttackFinishedRoutine());
+        }
+
+        if (readyForConfusion1) {
+            readyForConfusion1 = false;
+            StartCoroutine(confusedOnLungeAttackRoutine());
+        }
+
+        if (readyForConfusion2) {
+            readyForConfusion2 = false;
+            StartCoroutine(confusedOnLungeAttackFootprintsRoutine());
+        }
+
+
+    }
 
     private void Start()
     {
         // Ensure the arrow image and foot UI elements are initially inactive
+
+        if (confusedButton != null)
+            confusedButton.SetActive(false);
+
         if (arrowImage != null)
             arrowImage.gameObject.SetActive(false);
 
@@ -69,9 +125,14 @@ public class AudioManager : MonoBehaviour
 
     private void Update() {
         distance = (player.transform.position-carp.transform.position).sqrMagnitude;
-        if (distance<3*3 && !triggered && grabInteractable.isSelected) {
+        if (distance<3*3 && !triggered) {
             StartCoroutine(reachedStripRoutine());
             triggered = true;
+        }
+
+        if (waitingForSwordPickup && grabInteractable.isSelected) {
+            waitingForSwordPickup = false;
+            StartCoroutine(swordPickedUpRoutine());
         }
     }
 
@@ -176,10 +237,10 @@ public class AudioManager : MonoBehaviour
                 dummy.position = dummyPosition2;
         }
 
-        yield return new WaitForSeconds(waitTime + 5f);
+        yield return new WaitForSeconds(audioClips[5].length + 5f);
 
         // if the user didn't move forward yet, share the gulf
-        if (true) {
+        if ((player.transform.position-dummyPosition1).sqrMagnitude > 0.65) {
             audioSource.clip = audioClips[6];
             audioSource.Play();
 
@@ -218,7 +279,9 @@ public class AudioManager : MonoBehaviour
 
         yield return new WaitForSeconds(audioClips[7].length + 2f);
 
-        // SPAWN IN THE BUTTON FOR THE USER TO SAY THEY ARE CONFUSED
+        if (confusedButton != null)
+            confusedButton.SetActive(true);
+            readyForConfusion1 = true;
 
 
     }  
@@ -227,14 +290,17 @@ public class AudioManager : MonoBehaviour
     IEnumerator confusedOnLungeAttackRoutine()
     {
 
-        // HIDE THE BUTTON FOR THE USER TO SAY THEY ARE CONFUSED
+        if (confusedButton != null)
+            confusedButton.SetActive(false);
 
         audioSource.clip = audioClips[8];
         audioSource.Play();
 
         yield return new WaitForSeconds(audioClips[8].length + 2f);
 
-        // SPAWN IN THE BUTTON FOR THE USER TO SAY THEY ARE CONFUSED
+        if (confusedButton != null)
+            confusedButton.SetActive(true);
+            readyForConfusion2 = true;
 
     }  
 
@@ -242,8 +308,8 @@ public class AudioManager : MonoBehaviour
     IEnumerator confusedOnLungeAttackFootprintsRoutine()
     {
 
-        // HIDE IN THE BUTTON FOR THE USER TO SAY THEY ARE CONFUSED
-
+        if (confusedButton != null)
+            confusedButton.SetActive(false);
 
         Debug.Log("Showing lunge UI elements");
 
@@ -312,6 +378,9 @@ public class AudioManager : MonoBehaviour
     {
         audioSource.clip = audioClips[11];
         audioSource.Play();
+
+        yield return new WaitForSeconds(audioClips[11].length);
+
     }  
 
 
