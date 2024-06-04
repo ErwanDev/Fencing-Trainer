@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.UI;
-
 
 public class AudioManager : MonoBehaviour
 {
@@ -35,15 +33,9 @@ public class AudioManager : MonoBehaviour
     private bool readyForAdvanceHit = false;
     private bool readyForLungeHit = false;
     private bool readyForFlickHit = false;
-    public Button confusedButton; // Assign this in Unity Editor
-    private DummyCollider hitDetection;
-
-
 
     private void Start()
     {
-        confusedButton.gameObject.SetActive(false); // Hide the button initially
-        confusedButton.onClick.AddListener(ButtonPressed);
         // Ensure the arrow image and foot UI elements are initially inactive
         if (arrowImage != null)
             arrowImage.gameObject.SetActive(false);
@@ -71,58 +63,16 @@ public class AudioManager : MonoBehaviour
         sword = GameObject.Find("Fencing Foil Sword");
         grabInteractable = sword.GetComponent<XRGrabInteractable>();
         triggered = false;
-        if (sword != null)
-        {
-            hitDetection = sword.GetComponent<DummyCollider>();
-        }
+
         StartCoroutine(startingRoutine());
     }
 
-
-
-    private GameState currentState = GameState.Normal;
     private void Update() {
-        sword = GameObject.Find("Fencing Foil Sword");
-        grabInteractable = sword.GetComponent<XRGrabInteractable>();
         distance = (player.transform.position-carp.transform.position).sqrMagnitude;
         if (distance<3*3 && !triggered && grabInteractable.isSelected) {
             StartCoroutine(reachedStripRoutine());
             triggered = true;
         }
-        if (waitingForSwordPickup && grabInteractable.isSelected)
-        {
-            StartCoroutine(swordPickedUpRoutine());
-            waitingForSwordPickup = false;
-        }
-        if (readyForExtensionHit && hitDetection.CheckIfCorrectedHit() && hitDetection != null)
-        {
-            StartCoroutine(extensionAttackFinishedRoutine());
-            readyForExtensionHit = false;
-        }
-        if (readyForAdvanceHit && CheckIfMovedToNewPosition(new Vector3(-10.6334105f, 2.00732088f, 1.38100004f)))
-        {
-            StartCoroutine(advanceAttackFinishedRoutine());
-            readyForAdvanceHit = false;
-        }
-        if (readyForLungeHit && CheckIfMovedToNewPosition(new Vector3(-10.6334105f, 2.00732088f, 1.38100004f)))
-        {
-            StartCoroutine(lungeAttackFinishedRoutine());
-            readyForLungeHit = false;
-        }
-        if (readyForFlickHit && hitDetection.CheckIfCorrectedHit() && hitDetection != null)
-        {
-            StartCoroutine(flickAttackFinishedRoutine());
-        }
-        {
-
-        }
-    }
-
-
-    bool CheckIfMovedToNewPosition(Vector3 targetPosition, float threshold = 1.0f)
-    {
-        float distance = Vector3.Distance(player.transform.position, targetPosition);
-        return distance <= threshold;
     }
 
     // Executes as soon as the game starts
@@ -147,7 +97,6 @@ public class AudioManager : MonoBehaviour
                 yield return new WaitForSeconds(audioClips[1].length);
 
         }
-        // if not grab sword, clip[3], else clip[4]
 
     }
 
@@ -227,10 +176,10 @@ public class AudioManager : MonoBehaviour
                 dummy.position = dummyPosition2;
         }
 
-        yield return new WaitForSeconds(audioClips[5].length + 5f);
+        yield return new WaitForSeconds(waitTime + 5f);
 
         // if the user didn't move forward yet, share the gulf
-        if (CheckIfMovedToNewPosition(new Vector3(-10.6334105f, 2.00732088f, 1.38100004f))) {
+        if (true) {
             audioSource.clip = audioClips[6];
             audioSource.Play();
 
@@ -315,26 +264,7 @@ public class AudioManager : MonoBehaviour
         if (rightFootL != null)
             rightFootL.gameObject.SetActive(false);
 
-    }
-
-    private void ButtonPressed()
-    {
-        if (currentState == GameState.AdvanceAttackFinished)
-        {
-            StartCoroutine(confusedOnLungeAttackRoutine());
-        }
-        else if (currentState == GameState.LungeAttackFinished)
-        {
-            StartCoroutine(confusedOnLungeAttackFootprintsRoutine());
-        }
-    }
-
-    public enum GameState
-    {
-        Normal,
-        AdvanceAttackFinished,
-        LungeAttackFinished
-    }
+    }  
 
     // Executes when the user finishes the lunge attack
     IEnumerator lungeAttackFinishedRoutine()
@@ -382,7 +312,6 @@ public class AudioManager : MonoBehaviour
     {
         audioSource.clip = audioClips[11];
         audioSource.Play();
-        yield return null;
     }  
 
 
